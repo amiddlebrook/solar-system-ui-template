@@ -1,11 +1,13 @@
 {
   "name": "solar-system-ui-template",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "check": "tsc --noEmit",
     "build": "vite build",
+    "test": "node --test tests/build.test.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
