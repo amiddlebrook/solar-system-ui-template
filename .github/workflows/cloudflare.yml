@@ -50,27 +50,20 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      - name: Check Cloudflare credentials
-        id: credentials
+      - name: Verify Cloudflare deployment credentials
         shell: bash
         run: |
-          if [[ -n "$CLOUDFLARE_API_TOKEN" && -n "$CLOUDFLARE_ACCOUNT_ID" ]]; then
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::Cloudflare deployment skipped. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as GitHub Actions secrets."
-            echo "### Cloudflare deployment not configured" >> "$GITHUB_STEP_SUMMARY"
-            echo "Add repository Actions secrets **CLOUDFLARE_API_TOKEN** and **CLOUDFLARE_ACCOUNT_ID**, then re-run this workflow." >> "$GITHUB_STEP_SUMMARY"
+          if [[ -z "$CLOUDFLARE_API_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" ]]; then
+            echo "::error::Deployment is blocked: both CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repository secrets are required."
+            exit 1
           fi
+          echo "Cloudflare deployment credentials are configured."
       - uses: actions/checkout@v4
-        if: steps.credentials.outputs.ready == 'true'
       - uses: actions/download-artifact@v4
-        if: steps.credentials.outputs.ready == 'true'
         with:
           name: solar-ui-dist
           path: dist
       - name: Deploy verified static assets
-        if: steps.credentials.outputs.ready == 'true'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
