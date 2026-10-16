@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import {
   Activity, ArrowDownToLine, ArrowRight, ArrowUpRight, BarChart3, BookOpen,
   Check, CheckCircle2, ChevronRight, CircleHelp, Clock3, Copy, Database,
@@ -295,13 +295,13 @@ export default function App() {
   );
 }
 
-function MetricCard({title,value,helper,icon,color}:{title:string;value:string|number;helper:string;icon:React.ReactNode;color:string}) {
+function MetricCard({title,value,helper,icon,color}:{title:string;value:string|number;helper:string;icon:ReactNode;color:string}) {
   return <div className="metric-card"><div className="metric-top"><span>{title}</span><span className={'metric-icon metric-'+color}>{icon}</span></div><strong>{value}</strong><div className="metric-help">{helper}</div></div>;
 }
-function PanelHead({title,subtitle,action}:{title:string;subtitle:string;action?:React.ReactNode}) {
+function PanelHead({title,subtitle,action}:{title:string;subtitle:string;action?:ReactNode}) {
   return <div className="panel-head"><div><h3>{title}</h3><p>{subtitle}</p></div>{action}</div>;
 }
-function PageIntro({eyebrow,title,subtitle,action}:{eyebrow:string;title:string;subtitle:string;action?:React.ReactNode}) {
+function PageIntro({eyebrow,title,subtitle,action}:{eyebrow:string;title:string;subtitle:string;action?:ReactNode}) {
   return <div className="page-intro"><div><div className="eyebrow"><span className="eyebrow-line"/>{eyebrow}</div><h1>{title}</h1><p>{subtitle}</p></div>{action}</div>;
 }
 function EmptyState({label}:{label:string}) {
